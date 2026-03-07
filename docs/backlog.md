@@ -2,7 +2,7 @@
 
 ## Doing
 <!-- Items currently in progress -->
-- [>] S-006: Add live reload with fsnotify and SSE | feature:live-docs-dashboard | depends:S-004,S-005 | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main`
+- [=] S-006: Add live reload with fsnotify and SSE | feature:live-docs-dashboard | depends:S-004,S-005 | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main` — implemented, pending PR
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
