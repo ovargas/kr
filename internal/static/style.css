@@ -129,10 +129,25 @@ body {
 .file-list a {
     color: #2563eb;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .file-list a:hover { text-decoration: underline; }
+
+.file-excerpt {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0.25rem 0 0;
+    line-height: 1.4;
+}
+
+.file-name {
+    display: block;
+    font-size: 0.78rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
 
 .empty-state { color: #888; font-style: italic; }
 

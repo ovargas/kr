@@ -69,8 +69,15 @@ func TestFolderListing(t *testing.T) {
 	}
 
 	b, _ := io.ReadAll(resp.Body)
-	if !strings.Contains(string(b), "test-doc.md") {
+	body := string(b)
+	if !strings.Contains(body, "test-doc.md") {
 		t.Error("response missing file name 'test-doc.md'")
+	}
+	if !strings.Contains(body, "Hello") {
+		t.Error("response missing extracted title 'Hello'")
+	}
+	if !strings.Contains(body, "World.") {
+		t.Error("response missing extracted excerpt 'World.'")
 	}
 }
 
