@@ -152,8 +152,8 @@ Write tests for:
 ### Phase 2 Verification
 
 **Automated:**
-- [ ] `go test ./internal/renderer/...` — all tests pass
-- [ ] `go vet ./...` — no issues
+- [x] `go test ./internal/renderer/...` — all tests pass
+- [x] `go vet ./...` — no issues
 
 **Stop here.** Verify Phase 2 before proceeding.
 

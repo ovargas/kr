@@ -2,7 +2,7 @@
 
 ## Doing
 <!-- Items currently in progress -->
-- [>] S-002: Implement markdown rendering with front matter extraction | feature:live-docs-dashboard | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main`
+- [=] S-002: Implement markdown rendering with front matter extraction | feature:live-docs-dashboard | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main` — implemented, pending PR
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
