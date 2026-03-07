@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/ovargas/kr/internal/backlog"
 	"github.com/ovargas/kr/internal/templates"
 )
 
@@ -19,6 +20,39 @@ func (s *Server) handleBacklog(w http.ResponseWriter, r *http.Request) {
 
 	data := templates.BacklogData{
 		NavItems: navItems,
+	}
+
+	// Read and parse backlog.md — missing file renders empty board
+	content, err := os.ReadFile(filepath.Join(s.rootPath, "backlog.md"))
+	if err == nil {
+		b, parseErr := backlog.Parse(content)
+		if parseErr == nil {
+			for _, sec := range b.Sections {
+				var items []templates.BacklogItem
+				for _, it := range sec.Items {
+					var fields []templates.Field
+					for _, f := range it.Fields {
+						fields = append(fields, templates.Field{
+							Key:      f.Key,
+							Value:    f.Value,
+							IsLink:   f.IsLink,
+							LinkPath: f.LinkPath,
+						})
+					}
+					items = append(items, templates.BacklogItem{
+						Done:   it.Done,
+						ID:     it.ID,
+						Title:  it.Title,
+						Fields: fields,
+						Status: it.Status,
+					})
+				}
+				data.Sections = append(data.Sections, templates.Section{
+					Name:  sec.Name,
+					Items: items,
+				})
+			}
+		}
 	}
 
 	if err := s.tmpl.RenderBacklog(w, data); err != nil {
