@@ -2,7 +2,7 @@
 
 ## Doing
 <!-- Items currently in progress -->
-- [>] S-005: Implement backlog parser and Kanban board view | feature:live-docs-dashboard | depends:S-003 | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main`
+- [=] S-005: Implement backlog parser and Kanban board view | feature:live-docs-dashboard | depends:S-003 | plan:docs/plans/2026-03-07-live-docs-dashboard.md | spec:docs/features/2026-03-07-live-docs-dashboard.md — `main` — implemented, pending PR
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
