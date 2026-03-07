@@ -94,8 +94,8 @@ In `main()`, after flag parsing and validation:
 ### Phase 1 Verification
 
 **Automated:**
-- [ ] `go build -o kr ./cmd/kr` — binary builds without errors
-- [ ] `go vet ./...` — no issues
+- [x] `go build -o kr ./cmd/kr` — binary builds without errors
+- [x] `go vet ./...` — no issues
 
 **Manual:**
 - [ ] `./kr --path ./docs` starts and prints a URL with a random port
