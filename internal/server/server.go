@@ -4,6 +4,11 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"strings"
+
+	"github.com/ovargas/kr/internal/renderer"
+	"github.com/ovargas/kr/internal/static"
+	"github.com/ovargas/kr/internal/templates"
 )
 
 // Server holds the HTTP server configuration and state.
@@ -11,22 +16,53 @@ type Server struct {
 	port     int
 	rootPath string
 	mux      *http.ServeMux
+	renderer *renderer.Renderer
+	tmpl     *templates.Templates
 }
 
-// New creates a new Server with a placeholder route.
-func New(port int, rootPath string) *Server {
+// New creates a new Server with all routes registered.
+func New(port int, rootPath string) (*Server, error) {
+	tmpl, err := templates.New()
+	if err != nil {
+		return nil, err
+	}
+
 	mux := http.NewServeMux()
 	s := &Server{
 		port:     port,
 		rootPath: rootPath,
 		mux:      mux,
+		renderer: renderer.New(),
+		tmpl:     tmpl,
 	}
 
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "kr is running")
-	})
+	mux.HandleFunc("GET /{$}", s.handleBacklog)
+	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(static.FS))))
+	mux.HandleFunc("GET /", s.handleCatchAll)
 
-	return s
+	return s, nil
+}
+
+// handleCatchAll dispatches folder and document requests.
+// Paths like /{folder}/ go to handleFolder, /{folder}/{file} go to handleDocument.
+func (s *Server) handleCatchAll(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimPrefix(r.URL.Path, "/")
+	path = strings.TrimSuffix(path, "/")
+
+	parts := strings.SplitN(path, "/", 3)
+	switch {
+	case len(parts) == 1 && parts[0] != "":
+		// /{folder}/ — folder listing
+		r.SetPathValue("folder", parts[0])
+		s.handleFolder(w, r)
+	case len(parts) == 2:
+		// /{folder}/{file} — document view
+		r.SetPathValue("folder", parts[0])
+		r.SetPathValue("file", parts[1])
+		s.handleDocument(w, r)
+	default:
+		http.NotFound(w, r)
+	}
 }
 
 // Start binds to the configured port and serves HTTP requests.

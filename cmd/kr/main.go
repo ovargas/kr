@@ -31,7 +31,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	srv := server.New(*port, absPath)
+	srv, err := server.New(*port, absPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error initializing server: %v\n", err)
+		os.Exit(1)
+	}
 
 	errCh := make(chan error, 1)
 	go func() {
