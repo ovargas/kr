@@ -293,8 +293,8 @@ Use `//go:embed style.css main.js` to embed static files. Export an `http.FileSe
 ### Phase 3 Verification
 
 **Automated:**
-- [ ] `go build ./...` — all packages compile (templates parse, embeds resolve)
-- [ ] `go vet ./...` — no issues
+- [x] `go build ./...` — all packages compile (templates parse, embeds resolve)
+- [x] `go vet ./...` — no issues
 
 **Manual:**
 - [ ] Template files exist and contain valid Go template syntax
