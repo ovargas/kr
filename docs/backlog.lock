@@ -1,2 +1,7 @@
 # Managed by /next and /pr commands — do not edit manually
-locks: []
+locks:
+  - item: "S-003"
+    feature: "FEAT-001"
+    branch: "main"
+    worktree: "current-branch"
+    started: "2026-03-07T00:00:00"
