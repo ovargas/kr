@@ -42,7 +42,25 @@ func extractMeta(data []byte) (title string, excerpt string) {
 		return "", ""
 	}
 
-	// Collect excerpt lines: non-empty, non-heading lines after the title
+	// Try to find the first ## section and excerpt from its content.
+	// If no ## section exists, fall back to content directly after the H1.
+	fallbackStart := i
+	sectionFound := false
+	for i < len(lines) {
+		line := strings.TrimSpace(lines[i])
+		if strings.HasPrefix(line, "## ") {
+			sectionFound = true
+			i++ // skip past the ## heading
+			break
+		}
+		i++
+	}
+
+	if !sectionFound {
+		i = fallbackStart // no ## section, rewind to just after H1
+	}
+
+	// Collect excerpt lines: first paragraph of non-empty, non-heading lines
 	var excerptLines []string
 	for i < len(lines) {
 		line := strings.TrimSpace(lines[i])

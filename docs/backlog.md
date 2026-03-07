@@ -8,6 +8,7 @@
 
 ## Done
 <!-- Completed items -->
+- [x] BUG: Excerpt shows content before first section, not section content | severity:medium | bug:docs/bugs/2026-03-07-excerpt-wrong-section.md
 - [x] S-009: Update folder template for rich file listing | feature:rich-file-listing | depends:S-008 | plan:docs/plans/2026-03-07-rich-file-listing.md | spec:docs/features/2026-03-07-rich-file-listing.md
 - [x] S-008: Extend file listing to include title and excerpt | feature:rich-file-listing | depends:S-007 | plan:docs/plans/2026-03-07-rich-file-listing.md | spec:docs/features/2026-03-07-rich-file-listing.md
 - [x] S-007: Add title and excerpt extraction for markdown files | feature:rich-file-listing | plan:docs/plans/2026-03-07-rich-file-listing.md | spec:docs/features/2026-03-07-rich-file-listing.md

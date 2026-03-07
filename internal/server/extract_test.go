@@ -106,7 +106,22 @@ func TestExtractMeta_FrontMatterOnly(t *testing.T) {
 	}
 }
 
-func TestExtractMeta_BlockquoteValue(t *testing.T) {
+func TestExtractMeta_BlockquoteValueWithSection(t *testing.T) {
+	data := []byte("# Feature\n\n> **Value:** Some important text here.\n\n## Problem\n\nThe actual problem description lives here.\n")
+	title, excerpt := extractMeta(data)
+
+	if title != "Feature" {
+		t.Errorf("title = %q, want %q", title, "Feature")
+	}
+
+	want := "The actual problem description lives here."
+	if excerpt != want {
+		t.Errorf("excerpt = %q, want %q", excerpt, want)
+	}
+}
+
+func TestExtractMeta_BlockquoteValueNoSection(t *testing.T) {
+	// No ## section — falls back to content after H1
 	data := []byte("# Feature\n\n> **Value:** Some important text here.\n")
 	title, excerpt := extractMeta(data)
 
@@ -127,7 +142,22 @@ func TestExtractMeta_H1FollowedByHeading(t *testing.T) {
 	if title != "Main Title" {
 		t.Errorf("title = %q, want %q", title, "Main Title")
 	}
-	if excerpt != "" {
-		t.Errorf("excerpt = %q, want empty (next element is a heading)", excerpt)
+	want := "Content under section."
+	if excerpt != want {
+		t.Errorf("excerpt = %q, want %q", excerpt, want)
+	}
+}
+
+func TestExtractMeta_StructuredDoc(t *testing.T) {
+	data := []byte("---\nid: FEAT-001\nstatus: draft\n---\n\n# Live Documentation Dashboard\n\n> **Value:** Gives you a real-time control panel.\n\n## Problem\n\nAI agents continuously update project documentation, but there's no way to monitor this activity in real time.\n")
+	title, excerpt := extractMeta(data)
+
+	if title != "Live Documentation Dashboard" {
+		t.Errorf("title = %q, want %q", title, "Live Documentation Dashboard")
+	}
+
+	want := "AI agents continuously update project documentation, but there's no way to monitor this activity in real time."
+	if excerpt != want {
+		t.Errorf("excerpt = %q, want %q", excerpt, want)
 	}
 }
