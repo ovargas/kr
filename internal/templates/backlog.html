@@ -1,0 +1,29 @@
+{{define "content"}}
+<div class="kanban">
+    {{range .Sections}}
+    <div class="kanban-column">
+        <h2>{{.Name}} <span class="badge">{{len .Items}}</span></h2>
+        {{range .Items}}
+        <div class="kanban-card{{if .Done}} done{{end}}">
+            <div class="card-title">
+                <span class="card-id">{{.ID}}</span> {{.Title}}
+            </div>
+            {{if .Fields}}
+            <div class="card-fields">
+                {{range .Fields}}
+                <div class="card-field">
+                    <span class="field-key">{{.Key}}:</span>
+                    {{if .IsLink}}<a href="{{.LinkPath}}">{{.Value}}</a>{{else}}<span class="field-value">{{.Value}}</span>{{end}}
+                </div>
+                {{end}}
+            </div>
+            {{end}}
+            {{if .Status}}
+            <div class="card-status">{{.Status}}</div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+    {{end}}
+</div>
+{{end}}

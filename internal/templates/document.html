@@ -1,0 +1,12 @@
+{{define "content"}}
+{{if .FrontMatter}}
+<div class="front-matter">
+    {{range $key, $value := .FrontMatter}}
+    <span class="fm-key">{{$key}}:</span> <span class="fm-value">{{$value}}</span>
+    {{end}}
+</div>
+{{end}}
+<div class="markdown-body">
+    {{.Content}}
+</div>
+{{end}}

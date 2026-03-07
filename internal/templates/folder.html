@@ -1,0 +1,12 @@
+{{define "content"}}
+<h1>{{.FolderName}}</h1>
+{{if .Files}}
+<ul class="file-list">
+    {{range .Files}}
+    <li><a href="/{{$.FolderName}}/{{.Name}}">{{.Name}}</a></li>
+    {{end}}
+</ul>
+{{else}}
+<p class="empty-state">No documents in this folder</p>
+{{end}}
+{{end}}
