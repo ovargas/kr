@@ -9,6 +9,7 @@ import (
 	"github.com/ovargas/kr/internal/renderer"
 	"github.com/ovargas/kr/internal/static"
 	"github.com/ovargas/kr/internal/templates"
+	"github.com/ovargas/kr/internal/watcher"
 )
 
 // Server holds the HTTP server configuration and state.
@@ -18,6 +19,8 @@ type Server struct {
 	mux      *http.ServeMux
 	renderer *renderer.Renderer
 	tmpl     *templates.Templates
+	watcher  *watcher.Watcher
+	broker   *SSEBroker
 }
 
 // New creates a new Server with all routes registered.
@@ -27,6 +30,13 @@ func New(port int, rootPath string) (*Server, error) {
 		return nil, err
 	}
 
+	w, err := watcher.New(rootPath)
+	if err != nil {
+		return nil, err
+	}
+
+	broker := NewSSEBroker()
+
 	mux := http.NewServeMux()
 	s := &Server{
 		port:     port,
@@ -34,9 +44,19 @@ func New(port int, rootPath string) (*Server, error) {
 		mux:      mux,
 		renderer: renderer.New(),
 		tmpl:     tmpl,
+		watcher:  w,
+		broker:   broker,
 	}
 
+	// Forward watcher changes to SSE broker
+	go func() {
+		for range w.Changes() {
+			broker.Broadcast()
+		}
+	}()
+
 	mux.HandleFunc("GET /{$}", s.handleBacklog)
+	mux.HandleFunc("GET /events", s.handleSSE)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(static.FS))))
 	mux.HandleFunc("GET /", s.handleCatchAll)
 
@@ -77,4 +97,12 @@ func (s *Server) Start() error {
 	fmt.Printf("http://localhost:%d\n", port)
 
 	return http.Serve(listener, s.mux)
+}
+
+// Close shuts down the file watcher.
+func (s *Server) Close() error {
+	if s.watcher != nil {
+		return s.watcher.Close()
+	}
+	return nil
 }
