@@ -59,7 +59,11 @@ func listFiles(folderPath string) ([]templates.FileEntry, error) {
 		if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
 			continue
 		}
-		files = append(files, templates.FileEntry{Name: e.Name()})
+		entry := templates.FileEntry{Name: e.Name()}
+		if data, readErr := os.ReadFile(filepath.Join(folderPath, e.Name())); readErr == nil {
+			entry.Title, entry.Excerpt = extractMeta(data)
+		}
+		files = append(files, entry)
 	}
 
 	slices.SortFunc(files, func(a, b templates.FileEntry) int {

@@ -46,7 +46,9 @@ type BacklogData struct {
 
 // FileEntry represents a file in a folder listing.
 type FileEntry struct {
-	Name string
+	Name    string
+	Title   string
+	Excerpt string
 }
 
 // FolderData is the template data for the folder listing page.
