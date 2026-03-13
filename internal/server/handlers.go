@@ -19,7 +19,8 @@ func (s *Server) handleBacklog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := templates.BacklogData{
-		NavItems: navItems,
+		ProjectName: s.projectName,
+		NavItems:    navItems,
 	}
 
 	// Read and parse backlog.md — missing file renders empty board
@@ -89,9 +90,10 @@ func (s *Server) handleFolder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := templates.FolderData{
-		FolderName: folder,
-		Files:      files,
-		NavItems:   navItems,
+		ProjectName: s.projectName,
+		FolderName:  folder,
+		Files:       files,
+		NavItems:    navItems,
 	}
 
 	if err := s.tmpl.RenderFolder(w, data); err != nil {
@@ -135,6 +137,7 @@ func (s *Server) handleDocument(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := templates.DocumentData{
+		ProjectName: s.projectName,
 		FrontMatter: result.FrontMatter,
 		Content:     template.HTML(result.HTML),
 		NavItems:    navItems,

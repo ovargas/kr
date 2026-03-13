@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"path/filepath"
 	"strings"
 
 	"github.com/ovargas/kr/internal/renderer"
@@ -14,9 +15,10 @@ import (
 
 // Server holds the HTTP server configuration and state.
 type Server struct {
-	port     int
-	rootPath string
-	mux      *http.ServeMux
+	port        int
+	rootPath    string
+	projectName string
+	mux         *http.ServeMux
 	renderer *renderer.Renderer
 	tmpl     *templates.Templates
 	watcher  *watcher.Watcher
@@ -39,9 +41,10 @@ func New(port int, rootPath string) (*Server, error) {
 
 	mux := http.NewServeMux()
 	s := &Server{
-		port:     port,
-		rootPath: rootPath,
-		mux:      mux,
+		port:        port,
+		rootPath:    rootPath,
+		projectName: filepath.Base(rootPath),
+		mux:         mux,
 		renderer: renderer.New(),
 		tmpl:     tmpl,
 		watcher:  w,

@@ -40,8 +40,9 @@ type Field struct {
 
 // BacklogData is the template data for the Kanban board page.
 type BacklogData struct {
-	Sections []Section
-	NavItems []NavItem
+	ProjectName string
+	Sections    []Section
+	NavItems    []NavItem
 }
 
 // FileEntry represents a file in a folder listing.
@@ -53,13 +54,15 @@ type FileEntry struct {
 
 // FolderData is the template data for the folder listing page.
 type FolderData struct {
-	FolderName string
-	Files      []FileEntry
-	NavItems   []NavItem
+	ProjectName string
+	FolderName  string
+	Files       []FileEntry
+	NavItems    []NavItem
 }
 
 // DocumentData is the template data for the document view page.
 type DocumentData struct {
+	ProjectName string
 	FrontMatter map[string]any
 	Content     template.HTML
 	NavItems    []NavItem
