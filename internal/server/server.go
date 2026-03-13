@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"path/filepath"
 	"strings"
 
 	"github.com/ovargas/kr/internal/renderer"
@@ -26,7 +25,7 @@ type Server struct {
 }
 
 // New creates a new Server with all routes registered.
-func New(port int, rootPath string) (*Server, error) {
+func New(port int, rootPath string, projectName string) (*Server, error) {
 	tmpl, err := templates.New()
 	if err != nil {
 		return nil, err
@@ -43,7 +42,7 @@ func New(port int, rootPath string) (*Server, error) {
 	s := &Server{
 		port:        port,
 		rootPath:    rootPath,
-		projectName: filepath.Base(rootPath),
+		projectName: projectName,
 		mux:         mux,
 		renderer: renderer.New(),
 		tmpl:     tmpl,

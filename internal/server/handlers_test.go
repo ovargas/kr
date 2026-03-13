@@ -24,7 +24,7 @@ func setupTestServer(t *testing.T) (*Server, string) {
 		t.Fatal(err)
 	}
 
-	srv, err := New(0, dir)
+	srv, err := New(0, dir, "testproject")
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
