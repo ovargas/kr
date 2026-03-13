@@ -2,6 +2,7 @@
 
 ## Doing
 <!-- Items currently in progress -->
+- [=] S-010: Show project folder name in nav bar and browser tab title | feature:project-name-in-navbar | plan:docs/plans/2026-03-13-project-name-in-navbar.md | spec:docs/features/2026-03-13-project-name-in-navbar.md
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
