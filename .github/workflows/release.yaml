@@ -75,10 +75,6 @@ jobs:
           # Build main CLI tool (simple name, suffix only for Windows)
           go build -ldflags "${LDFLAGS}" -o kr${{ matrix.suffix }} ./cmd/kr
 
-          # Build standalone plugins
-          go build -ldflags "${LDFLAGS}" -o kr-gen-go${{ matrix.suffix }} ./cmd/kr-gen-go
-          go build -ldflags "${LDFLAGS}" -o kr-gen-python${{ matrix.suffix }} ./cmd/kr-gen-python
-
       - name: Create archives
         run: |
           VERSION=${{ steps.version.outputs.version }}
