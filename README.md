@@ -139,6 +139,40 @@ go run ./cmd/kr --path ./docs
 golangci-lint run ./...
 ```
 
+## CI / Release configuration
+
+This repository uses two GitHub Actions workflows:
+
+| Workflow | Trigger | Purpose |
+|---|---|---|
+| `semantic-release.yaml` | Push to `main` | Analyzes commits, bumps the version, and creates a Git tag + GitHub Release |
+| `release.yaml` | Push of `v*` tags / manual dispatch | Builds multi-platform binaries and attaches them to the GitHub Release |
+
+### Required repository secret — `GH_TOKEN`
+
+The `semantic-release` workflow must authenticate with a **Personal Access Token (PAT)** or a **GitHub App token** stored as a repository secret named `GH_TOKEN`.
+
+The default `GITHUB_TOKEN` provided to every workflow cannot trigger other workflows. When semantic-release pushes the new tag using `GITHUB_TOKEN`, GitHub treats that push as an internal action and `release.yaml` never fires. Using a PAT/App token makes the tag push look like a regular user/app event, which does trigger `release.yaml`.
+
+**Required token scopes:**
+
+| Scope (classic PAT) | Fine-grained permission | Why |
+|---|---|---|
+| `repo` | Contents: Read & write | Push tags and create/update releases |
+| `write:discussion` (optional) | Discussions: Read & write (optional) | Required by some semantic-release plugins |
+
+**How to add the secret:**
+
+1. Create a [Personal Access Token](https://github.com/settings/tokens) (classic `repo` scope, or fine-grained with *Contents: Read & write* on this repository).
+2. In the repository, go to **Settings → Secrets and variables → Actions → New repository secret**.
+3. Name: `GH_TOKEN`, Value: your token.
+
+After adding `GH_TOKEN`, the next merge to `main` will let semantic-release push a tag that automatically triggers the `Release` workflow to build and attach binaries.
+
+### Manual release trigger
+
+The `release.yaml` workflow also supports `workflow_dispatch`, so you can run it manually from the **Actions** tab for any existing tag (e.g. to re-attach binaries after an initial failed run).
+
 ## License
 
 MIT
