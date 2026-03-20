@@ -21,5 +21,8 @@ jobs:
           node-version: "lts/*"
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          # Use a PAT instead of the default GITHUB_TOKEN so that the tag push
+          # created by semantic-release triggers the Release workflow
+          # (tags pushed by GITHUB_TOKEN do not fire push-tag workflow triggers).
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
         run: npx semantic-release

@@ -108,6 +108,24 @@ Pipe-delimited fields (`key:value`) are displayed on each card. Fields containin
 | `/{folder}/{file}.md` | Rendered Markdown document |
 | `/events` | SSE endpoint for live reload |
 
+## CI / Release
+
+Releases are created automatically by [semantic-release](https://semantic-release.gitbook.io/) when commits following the [Conventional Commits](https://www.conventionalcommits.org/) format are merged into `main`.
+
+### Required repository secret
+
+| Secret name | Required permissions |
+|---|---|
+| `SEMANTIC_RELEASE_TOKEN` | A Personal Access Token (PAT) or GitHub App token with **Contents: Read & write** (and optionally Issues/PRs write for release notes). |
+
+> **Why is this needed?**  Tags pushed by a workflow that uses the default `GITHUB_TOKEN` do not trigger other workflows (e.g. `release.yaml`). Using a PAT or GitHub App token makes the tag push behave like a normal user event and causes `release.yaml` to run and upload build artifacts to the GitHub Release.
+>
+> Without `SEMANTIC_RELEASE_TOKEN`, semantic-release will still create a tag and a GitHub Release, but the binary assets will **not** be attached.
+
+### Manually re-running the Release workflow
+
+If you need to re-attach assets to an existing tag, navigate to **Actions → Release → Run workflow** in the GitHub UI and select the appropriate tag. The `workflow_dispatch` trigger on `release.yaml` makes this possible.
+
 ## Development
 
 ```bash
