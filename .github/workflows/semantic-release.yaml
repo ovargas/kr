@@ -21,5 +21,11 @@ jobs:
           node-version: "lts/*"
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          # Use a PAT/App token (GH_TOKEN) instead of the default GITHUB_TOKEN.
+          # Tags pushed by the default token do not trigger other workflows (e.g. release.yaml),
+          # so a personal access token or GitHub App token with `contents: write` is required.
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # GITHUB_TOKEN is set to the same PAT for compatibility with semantic-release
+          # plugins and third-party actions that read GITHUB_TOKEN instead of GH_TOKEN.
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
