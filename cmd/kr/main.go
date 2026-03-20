@@ -8,9 +8,22 @@ import (
 	"path/filepath"
 
 	"github.com/ovargas/kr/internal/server"
+	"github.com/ovargas/kr/internal/version"
 )
 
+const banner = `
+ _    _ ______  
+| |  / |_____ \ 
+| | / / _____) )
+| |< < (_____ ( 
+| | \ \      | |
+|_|  \_)     |_|
+`
+
 func main() {
+	fmt.Fprintf(os.Stdout, banner)
+	fmt.Fprintf(os.Stdout, "%s\n", version.Full())
+
 	port := flag.Int("port", 0, "port to listen on (0 for random)")
 	path := flag.String("path", ".", "path to documentation directory")
 	title := flag.String("title", "", "project name shown in navbar (defaults to current directory name)")
