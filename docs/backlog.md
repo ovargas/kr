@@ -3,6 +3,10 @@
 ## Doing
 <!-- Items currently in progress -->
 - [=] S-010: Show project folder name in nav bar and browser tab title | feature:project-name-in-navbar | plan:docs/plans/2026-03-13-project-name-in-navbar.md | spec:docs/features/2026-03-13-project-name-in-navbar.md
+- [=] S-011: Implement search logic — regex compilation and file scanning | feature:content-search | service:be | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [=] S-012: Add search handler and route | feature:content-search | service:be | depends:S-011 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [=] S-013: Add search results template | feature:content-search | service:fe | depends:S-012 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [=] S-014: Add search input and toggles to navbar | feature:content-search | service:fe | depends:S-013 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
