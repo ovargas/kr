@@ -147,3 +147,62 @@ func (s *Server) handleDocument(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 	}
 }
+
+const maxSearchResults = 50
+
+func (s *Server) handleSearch(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	caseSensitive := r.URL.Query().Get("case") == "1"
+	wholeWord := r.URL.Query().Get("word") == "1"
+	useRegex := r.URL.Query().Get("regex") == "1"
+
+	navItems, err := scanFolders(s.rootPath)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	data := templates.SearchData{
+		ProjectName:   s.projectName,
+		NavItems:      navItems,
+		Query:         query,
+		CaseSensitive: caseSensitive,
+		WholeWord:     wholeWord,
+		UseRegex:      useRegex,
+		SearchQuery:   query,
+		SearchCase:    caseSensitive,
+		SearchWord:    wholeWord,
+		SearchRegex:   useRegex,
+	}
+
+	if query != "" {
+		opts := SearchOptions{
+			Query:         query,
+			CaseSensitive: caseSensitive,
+			WholeWord:     wholeWord,
+			UseRegex:      useRegex,
+		}
+		outcome, searchErr := searchFiles(s.rootPath, opts, maxSearchResults)
+		if searchErr != nil {
+			data.Error = "Invalid regular expression: " + searchErr.Error()
+		} else {
+			for _, r := range outcome.Results {
+				data.Results = append(data.Results, templates.SearchResultEntry{
+					Folder:  r.Folder,
+					Name:    r.Name,
+					Title:   r.Title,
+					Excerpt: r.Excerpt,
+				})
+			}
+			data.TotalFound = len(outcome.Results)
+			if outcome.Overflow {
+				data.TotalFound = maxSearchResults
+			}
+			data.Overflow = outcome.Overflow
+		}
+	}
+
+	if err := s.tmpl.RenderSearch(w, data); err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+	}
+}

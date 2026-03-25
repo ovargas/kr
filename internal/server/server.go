@@ -59,6 +59,7 @@ func New(port int, rootPath string, projectName string) (*Server, error) {
 
 	mux.HandleFunc("GET /{$}", s.handleBacklog)
 	mux.HandleFunc("GET /events", s.handleSSE)
+	mux.HandleFunc("GET /search", s.handleSearch)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(static.FS))))
 	mux.HandleFunc("GET /", s.handleCatchAll)
 
