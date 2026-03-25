@@ -2,17 +2,17 @@
 
 ## Doing
 <!-- Items currently in progress -->
-- [=] S-010: Show project folder name in nav bar and browser tab title | feature:project-name-in-navbar | plan:docs/plans/2026-03-13-project-name-in-navbar.md | spec:docs/features/2026-03-13-project-name-in-navbar.md
-- [=] S-011: Implement search logic — regex compilation and file scanning | feature:content-search | service:be | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
-- [=] S-012: Add search handler and route | feature:content-search | service:be | depends:S-011 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
-- [=] S-013: Add search results template | feature:content-search | service:fe | depends:S-012 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
-- [=] S-014: Add search input and toggles to navbar | feature:content-search | service:fe | depends:S-013 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
 
 ## Ready
 <!-- Items ready for implementation — refined and planned -->
 
 ## Done
 <!-- Completed items -->
+- [x] S-014: Add search input and toggles to navbar | feature:content-search | service:fe | depends:S-013 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [x] S-013: Add search results template | feature:content-search | service:fe | depends:S-012 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [x] S-012: Add search handler and route | feature:content-search | service:be | depends:S-011 | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [x] S-011: Implement search logic — regex compilation and file scanning | feature:content-search | service:be | plan:docs/plans/2026-03-25-content-search.md | spec:docs/features/2026-03-25-content-search.md
+- [x] S-010: Show project folder name in nav bar and browser tab title | feature:project-name-in-navbar | plan:docs/plans/2026-03-13-project-name-in-navbar.md | spec:docs/features/2026-03-13-project-name-in-navbar.md
 - [x] BUG: Excerpt shows content before first section, not section content | severity:medium | bug:docs/bugs/2026-03-07-excerpt-wrong-section.md
 - [x] S-009: Update folder template for rich file listing | feature:rich-file-listing | depends:S-008 | plan:docs/plans/2026-03-07-rich-file-listing.md | spec:docs/features/2026-03-07-rich-file-listing.md
 - [x] S-008: Extend file listing to include title and excerpt | feature:rich-file-listing | depends:S-007 | plan:docs/plans/2026-03-07-rich-file-listing.md | spec:docs/features/2026-03-07-rich-file-listing.md
