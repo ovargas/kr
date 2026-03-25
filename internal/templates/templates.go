@@ -40,9 +40,13 @@ type Field struct {
 
 // BacklogData is the template data for the Kanban board page.
 type BacklogData struct {
-	ProjectName string
-	Sections    []Section
-	NavItems    []NavItem
+	ProjectName   string
+	Sections      []Section
+	NavItems      []NavItem
+	SearchQuery   string
+	SearchCase    bool
+	SearchWord    bool
+	SearchRegex   bool
 }
 
 // FileEntry represents a file in a folder listing.
@@ -54,18 +58,52 @@ type FileEntry struct {
 
 // FolderData is the template data for the folder listing page.
 type FolderData struct {
-	ProjectName string
-	FolderName  string
-	Files       []FileEntry
-	NavItems    []NavItem
+	ProjectName   string
+	FolderName    string
+	Files         []FileEntry
+	NavItems      []NavItem
+	SearchQuery   string
+	SearchCase    bool
+	SearchWord    bool
+	SearchRegex   bool
 }
 
 // DocumentData is the template data for the document view page.
 type DocumentData struct {
-	ProjectName string
-	FrontMatter map[string]any
-	Content     template.HTML
-	NavItems    []NavItem
+	ProjectName   string
+	FrontMatter   map[string]any
+	Content       template.HTML
+	NavItems      []NavItem
+	SearchQuery   string
+	SearchCase    bool
+	SearchWord    bool
+	SearchRegex   bool
+}
+
+// SearchResultEntry represents a file that matched a search query.
+type SearchResultEntry struct {
+	Folder  string
+	Name    string
+	Title   string
+	Excerpt string
+}
+
+// SearchData is the template data for the search results page.
+type SearchData struct {
+	ProjectName   string
+	NavItems      []NavItem
+	Query         string
+	CaseSensitive bool
+	WholeWord     bool
+	UseRegex      bool
+	Results       []SearchResultEntry
+	Overflow      bool
+	Error         string
+	TotalFound    int
+	SearchQuery   string
+	SearchCase    bool
+	SearchWord    bool
+	SearchRegex   bool
 }
 
 // Templates holds parsed HTML templates and renders pages.
@@ -74,6 +112,7 @@ type Templates struct {
 	backlog  *template.Template
 	folder   *template.Template
 	document *template.Template
+	search   *template.Template
 }
 
 // New parses all embedded templates and returns a Templates instance.
@@ -98,11 +137,17 @@ func New() (*Templates, error) {
 		return nil, err
 	}
 
+	search, err := template.Must(layout.Clone()).ParseFS(templateFS, "search.html")
+	if err != nil {
+		return nil, err
+	}
+
 	return &Templates{
 		layout:   layout,
 		backlog:  backlog,
 		folder:   folder,
 		document: document,
+		search:   search,
 	}, nil
 }
 
@@ -119,4 +164,9 @@ func (t *Templates) RenderFolder(w io.Writer, data FolderData) error {
 // RenderDocument renders the markdown document view page.
 func (t *Templates) RenderDocument(w io.Writer, data DocumentData) error {
 	return t.document.ExecuteTemplate(w, "layout", data)
+}
+
+// RenderSearch renders the search results page.
+func (t *Templates) RenderSearch(w io.Writer, data SearchData) error {
+	return t.search.ExecuteTemplate(w, "layout", data)
 }

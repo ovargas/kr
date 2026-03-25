@@ -14,6 +14,15 @@
             <a href="/{{.Name}}/" class="nav-link{{if .Active}} active{{end}}">{{.Name}}</a>
             {{end}}
         </div>
+        <form action="/search" method="GET" class="search-form">
+            <button type="button" class="search-toggle{{if .SearchCase}} active{{end}}" data-param="case" title="Case sensitive">Aa</button>
+            <button type="button" class="search-toggle{{if .SearchWord}} active{{end}}" data-param="word" title="Match whole word">W</button>
+            <button type="button" class="search-toggle{{if .SearchRegex}} active{{end}}" data-param="regex" title="Use regular expression">.*</button>
+            <input type="hidden" name="case" value="{{if .SearchCase}}1{{else}}0{{end}}">
+            <input type="hidden" name="word" value="{{if .SearchWord}}1{{else}}0{{end}}">
+            <input type="hidden" name="regex" value="{{if .SearchRegex}}1{{else}}0{{end}}">
+            <input type="text" name="q" class="search-input" placeholder="Search..." value="{{.SearchQuery}}" autocomplete="off">
+        </form>
     </nav>
     <main class="content">
         {{template "content" .}}

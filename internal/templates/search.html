@@ -1,0 +1,29 @@
+{{define "content"}}
+<h1>Search results for "{{.Query}}"</h1>
+{{if .Error}}
+<p class="search-error">{{.Error}}</p>
+{{else if .Results}}
+<p class="search-count">{{.TotalFound}} files found{{if .Overflow}} (showing first {{len .Results}}){{end}}</p>
+<ul class="file-list">
+    {{$prevFolder := ""}}
+    {{range .Results}}
+    {{if ne .Folder $prevFolder}}
+    {{if .Folder}}<li class="search-folder-label">{{.Folder}}/</li>{{end}}
+    {{end}}
+    {{$prevFolder = .Folder}}
+    <li>
+        <a href="/{{if .Folder}}{{.Folder}}/{{end}}{{.Name}}">{{if .Title}}{{.Title}}{{else}}{{.Name}}{{end}}</a>
+        {{if .Excerpt}}<p class="file-excerpt">{{.Excerpt}}</p>{{end}}
+        {{if .Title}}<span class="file-name">{{if .Folder}}{{.Folder}}/{{end}}{{.Name}}</span>{{end}}
+    </li>
+    {{end}}
+</ul>
+{{if .Overflow}}
+<p class="search-overflow">More than {{len .Results}} results found. Refine your search to see more specific results.</p>
+{{end}}
+{{else if .Query}}
+<p class="empty-state">No files match your search</p>
+{{else}}
+<p class="empty-state">Enter a search term to find documents</p>
+{{end}}
+{{end}}
